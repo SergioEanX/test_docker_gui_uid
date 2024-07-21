@@ -68,6 +68,7 @@ Endpoint **http://localhost:8000/health-check** is protected with an encrypted k
 Client has to pass into the header a string encrypted with the key in .env
 If string not encrypted with the key, the endpoint will return 401 Unauthorized
 The same will happen if the key is not passed in the header.
+This endpoint is not rate limited.
 To test using curl, use the following command:
 
 ```sh
@@ -156,6 +157,21 @@ Expected successful response:
   "info": "file 'testfile.txt' saved at 'app/upload/testfile.txt'"
 }
 ```
+
+## Building the Docker Image
+
+To build the Docker image, run the following command:
+
+```sh
+export DOCKER_BUILDKIT=1
+docker buildx build --platform linux/amd64 -t <your_docker_username>/fastapi-testing-gui-uid:TAG .
+```
+Then push the image to Docker Hub:
+
+```sh
+docker login
+docker push sergioferlito/fastapi-testing-gui-uid:0.0.1
+```  
 
 ## Troubleshooting
 
