@@ -33,18 +33,19 @@ def decrypt_string(key, encrypted_string):
         # Attempt to decrypt the string
         decrypted_string = fernet.decrypt(encrypted_string.encode()).decode()
         return True
-    except:
+    except Exception as e:
         # Return False if decryption fails
         return False
 
 
 if __name__ == "__main__":
     # Generate a new key
-    key = generate_key()
-    print(f"Generated key: {key.decode()}")
+    # key = generate_key()
+    # print(f"Generated key: {key.decode()}")
+    key="OvX-ujaqTCH3S1u11CfC1dxY3YDmR97fUln8fKu-u7w="
 
     # Encrypt a test string
-    test_string = "This is a test string."
+    test_string = "Invoke health-check"
     encrypted_string = encrypt_string(key, test_string)
     print(f"Encrypted string: {encrypted_string}")
 
