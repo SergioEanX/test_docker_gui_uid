@@ -62,6 +62,20 @@ test_docker_gui_uid/
 
 3. The FastAPI application will be accessible at `http://localhost:8000`.
 
+
+## Health Check Endpoint (protected) 
+Endpoint **http://localhost:8000/health-check** is protected with an encrypted key.
+Client has to pass into the header a string encrypted with the key in .env
+If string not encrypted with the key, the endpoint will return 401 Unauthorized
+The same will happen if the key is not passed in the header.
+To test using curl, use the following command:
+
+```sh
+curl -w "\nHTTP Status: %{http_code}\n" -H "encrypted-str: your_encrypted_text" -X GET http://localhost:8000/health-check
+
+```
+**Note:** pass into the header using the key "encrypted-str" instead of "encrypted_str".
+
 ## Testing the Application
 
 ### Running Tests
