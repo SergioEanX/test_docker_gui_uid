@@ -24,17 +24,19 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 BASE_DIR = Path(__file__).resolve().parent
-DECRYPTION_KEY = os.getenv("DECRYPTION_KEY").encode()  # Ensure this is set in your Docker environment
+DECRYPTION_KEY = "OvX-ujaqTCH3S1u11CfC1dxY3YDmR97fUln8fKu-u7w="
+if not os.getenv("DECRYPTION_KEY") is None:
+    DECRYPTION_KEY = os.getenv("DECRYPTION_KEY").encode()  # Ensure this is set in your Docker environment
 fernet = Fernet(DECRYPTION_KEY)
 
 
 @app.get("/health-check")
-async def health_check(x_encrypted_key: str = Header(None)):
+async def health_check(encrypted_str: str = Header(None)):
     try:
-        decrypted_key = fernet.decrypt(x_encrypted_key.encode()).decode()
-        expected_key = "expected_key_value"  # This should be set to a known value that matches the decrypted value
-        if decrypted_key != expected_key:
+        if encrypted_str is None:
             raise HTTPException(status_code=403, detail="Forbidden")
+        fernet = Fernet(DECRYPTION_KEY)
+        fernet.decrypt(encrypted_str).decode()
         return await check_filesystem(request=Request(scope={}))
     except Exception as e:
         logger.error(f"Error in health_check: {e}")
