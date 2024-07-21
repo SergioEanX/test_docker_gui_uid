@@ -37,7 +37,7 @@ async def health_check(encrypted_str: str = Header(None)):
             raise HTTPException(status_code=403, detail="Forbidden")
         fernet = Fernet(DECRYPTION_KEY)
         fernet.decrypt(encrypted_str).decode()
-        return await check_filesystem(request=Request(scope={}))
+        return await do_fs_check()
     except Exception as e:
         logger.error(f"Error in health_check: {e}")
         raise HTTPException(status_code=403, detail="Forbidden")
@@ -53,6 +53,10 @@ def get_test_file_path():
 @app.get("/check-filesystem")
 @limiter.limit("5/minute")  # Allow max 5 requests per minute
 async def check_filesystem(request: Request):
+    await do_fs_check()
+
+
+async def do_fs_check():
     test_file_path = get_test_file_path()
     test_content = "Test content"
     try:
