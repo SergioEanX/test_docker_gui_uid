@@ -1,27 +1,56 @@
 from cryptography.fernet import Fernet
 
 
-def generate_encrypted_key(decryption_key: str, value_to_encrypt: str) -> str:
-    fernet = Fernet(decryption_key.encode())
-    encrypted_value = fernet.encrypt(value_to_encrypt.encode())
-    return encrypted_value.decode()
+def generate_key():
+    """
+    Generates a Fernet encryption/decryption key.
+    """
+    return Fernet.generate_key()
 
 
-def generate_decryption_key():
-    key = Fernet.generate_key()
-    return key.decode()
+def encrypt_string(key, string_to_encrypt):
+    """
+    Encrypts a string using the provided key.
+
+    :param key: The encryption key.
+    :param string_to_encrypt: The string to encrypt.
+    :return: The encrypted string.
+    """
+    fernet = Fernet(key)
+    return fernet.encrypt(string_to_encrypt.encode()).decode()
+
+
+def decrypt_string(key, encrypted_string):
+    """
+    Decrypts an encrypted string using the provided key. Returns False if decryption fails.
+
+    :param key: The decryption key.
+    :param encrypted_string: The encrypted string to decrypt.
+    :return: True if decryption is successful, False otherwise.
+    """
+    fernet = Fernet(key)
+    try:
+        # Attempt to decrypt the string
+        decrypted_string = fernet.decrypt(encrypted_string.encode()).decode()
+        return True
+    except:
+        # Return False if decryption fails
+        return False
 
 
 if __name__ == "__main__":
-    generateEK= False
-    if generateEK:
-        # Generate a new decryption key
-        decryption_key = generate_decryption_key()
-        print(f"Decryption Key: {decryption_key}")
+    # Generate a new key
+    key = generate_key()
+    print(f"Generated key: {key.decode()}")
 
-    # Replace this with the actual decryption key used in the Docker environment
-    dk = "your_decryption_key"  # 32 url-safe base64-encoded bytes
-    # The value that the server expects to decrypt and match
-    value_to_encrypt = "rcjR4e4hFHJbwqTwlHBMgqnnklLwtTKuRjSeBtaTJaM="
-    encrypted_value = generate_encrypted_key(dk, value_to_encrypt)
-    print(f"Encrypted key: {encrypted_value}")
+    # Encrypt a test string
+    test_string = "This is a test string."
+    encrypted_string = encrypt_string(key, test_string)
+    print(f"Encrypted string: {encrypted_string}")
+
+    # Decrypt the encrypted string
+    result = decrypt_string(key, encrypted_string)
+    if result:
+        print(f"Decryption successful: {encrypted_string} -> {test_string}")
+    else:
+        print("Decryption failed.")
