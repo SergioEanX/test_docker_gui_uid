@@ -7,8 +7,8 @@ services:
       args:
         UID: 1000 # Replace with your user ID
         GID: 1000 # Replace with your group ID
-    image: fastapi-app:latest
-    container_name: fastapi_container
+    image: fastapi-app:latest # sergioeanx/fastapi-testing-gui-uid:0.0.1 is the image on Docker Hub
+    container_name: fastapi_test_app
     volumes:
       - ./app/upload:/app/upload
     ports:
@@ -18,7 +18,7 @@ services:
       - DECRYPTION_KEY=OvX-ujaqTCH3S1u11CfC1dxY3YDmR97fUln8fKu-u7w=
     healthcheck:
 #      test: ["CMD-SHELL", "curl --fail http://localhost:8000/check-filesystem || exit 1"]
-      test: ["CMD-SHELL", "curl --fail -w \"\\nHTTP Status: %{http_code}\\n\" -H 'encrypted-str: gAAAAABmnRIH2l6GjcuXM-EnEnaoBINfKR8kgh8fwXA-A9KqKR4a9zHvMb56QH4-8AbQZzO6DkrqbFLWUs0bDrKNA8EEwH6F6FhIQWPfngPvBTus6bHezlQ=' -X GET http://localhost:8000/health-check || exit 1"]
+      test: ["CMD-SHELL", "curl --fail -w \"\\nHTTP Status: %{http_code}\\n\" -H 'encrypted-str: gAAAAABmnRIH2l6GjcuXM-EnEnaoBINfKR8kgh8fwXA-A9KqKR4a9zHvMb56QH4-8AbQZzO6DkrqbFLWUs0bDrKNA8EEwH6F6FhIQWPfngPvBTus6bHezlQ=' -X GET http://localhost:80/health-check || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
