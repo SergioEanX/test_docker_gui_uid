@@ -7,7 +7,8 @@ services:
       args:
         UID: 1000 # Replace with your user ID
         GID: 1000 # Replace with your group ID
-    image: fastapi-app:latest # sergioeanx/fastapi-testing-gui-uid:0.0.1 is the image on Docker Hub
+#    image: fastapi-app:latest
+    image: sergioeanx/fastapi-testing-gui-uid:0.0.1 #is the image on Docker Hub
     container_name: fastapi_test_app
     volumes:
       - ./app/upload:/app/upload
