@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build:
+      context: .
+      args:
+        UID: 1000 # Replace with your user ID
+        GID: 1000 # Replace with your group ID
+    image: fastapi-app:latest
+    container_name: fastapi_container
+    volumes:
+      - ./app/upload:/app/upload
+    ports:
+      - "8000:80"
+    user: "1000:1000" # Replace with your user ID and group ID
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8000/check-filesystem || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

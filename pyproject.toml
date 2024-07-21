@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "test-docker-gui-uid"
+version = "0.1.0"
+description = ""
+authors = ["SergioEanX <sergio.ferlito@enea.it>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.111.1"
+uvicorn = "^0.30.3"
+slowapi = "^0.1.9"
+aiofiles = "^24.1.0"
+cryptography = "^43.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+python_paths = ["."]
